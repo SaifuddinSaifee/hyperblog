@@ -8,8 +8,11 @@ from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain.callbacks import get_openai_callback # Get price of each API call
 
-from apikey import OPENAI_API_KEY
-os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+# from apikey import OPENAI_API_KEY
+
+with st.sidebar:
+    OPENAI_API_KEY = st.text_input("Enter your OpenAI API key", type="password", key="openai_api_key")
+    os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 
 
 # App framkework variable | Taking input from the user
@@ -39,7 +42,7 @@ with col2:
 st.write("##")
 
 prompt = st.text_area(
-    label = '**_Tell us about more about the Blog post you want to send, or any insturction you might want to add_**',
+    label = '**_Tell us about more about the Blog post you want to create, or any insturction you might want to add_**',
     height = 200,
     max_chars= 1000,
     placeholder="Innovation which revolutionzes the marketing campaigns..."
@@ -62,7 +65,7 @@ st.write("##")
 
 # The LLMs function that generate the response based on the prompt and the supplied temperature
 def llm_response(temperature):
-    llm = ChatOpenAI(temperature=temperature, model='gpt-3.5-turbo', max_tokens=2000, streaming=True)
+    llm = ChatOpenAI(temperature=temperature, model='gpt-4-turbo', max_tokens=2000, streaming=True)
     title_chain = LLMChain(llm=llm, prompt=title_template, verbose=True)
     response = title_chain.run(brand_tone=brand_tone, campaign_goal=campaign_goal, industry=industry, prompt=prompt)
     return response
@@ -74,14 +77,15 @@ def generate_draft():
     st.write(llm_response(round(random.uniform(1, 1), 2)))
 
 # Blog post generation function
-if st.button('Generate'):
+if OPENAI_API_KEY:
+    if st.button('Generate'):
 
-    title_template = PromptTemplate(    
-        input_variables= ['brand_tone', 'campaign_goal', 'industry', 'prompt'],
-        template="Your objective is to create a persuasive {brand_tone} blog post aimed at readers within the {industry} industry interest, as part of the {campaign_goal}. Utilize the provided topic {prompt} for context. It is essential to maintain the {brand_tone}. Do not use bullet points or numbered points in the entire blog, write a lengthy blog.To structure your blog post effectively, begin with a concise title describing the topic. Next, plan and outline the key sections, headings, and subheadings, followed by a captivating introduction that introduces the post's content. In the body, use clear headings, brief paragraphs, and incorporate lists, visuals, and hyperlinks for clarity and engagement. Finally, conclude the blog post with a friendly signoff, summarizing the main points and reinforcing the key message for the readers to remember. IMPORTANT: WRITE THE ENTIRE BLOG IN MARKDOWN ONLY, AND CREATE A TABLE OF CONTENT AFTER THE TITLE, AND THEN WRITE THE BLOG CONTENT."
-        )
+        title_template = PromptTemplate(    
+            input_variables= ['brand_tone', 'campaign_goal', 'industry', 'prompt'],
+            template="Your objective is to create a persuasive {brand_tone} blog post aimed at readers within the {industry} industry interest, as part of the {campaign_goal}. Utilize the provided topic {prompt} for context. It is essential to maintain the {brand_tone}. Do not use bullet points or numbered points in the entire blog, write a lengthy blog.To structure your blog post effectively, begin with a concise title describing the topic. Next, plan and outline the key sections, headings, and subheadings, followed by a captivating introduction that introduces the post's content. In the body, use clear headings, brief paragraphs, and incorporate lists, visuals, and hyperlinks for clarity and engagement. Finally, conclude the blog post with a friendly signoff, summarizing the main points and reinforcing the key message for the readers to remember. IMPORTANT: WRITE THE ENTIRE BLOG IN MARKDOWN ONLY, AND CREATE A TABLE OF CONTENT AFTER THE TITLE, AND THEN WRITE THE BLOG CONTENT."
+            )
 
-    generate_draft()
+        generate_draft()
 
 # Footer code
 footer="""<style>
