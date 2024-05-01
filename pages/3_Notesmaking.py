@@ -69,7 +69,7 @@ def main():
             print(data_chunk.page_content)
             content = content+data_chunk.page_content
 
-        prompt = '''Task: Create a detailed markdown structured college notes for Students
+        prompt = f'''Task: Create a detailed markdown structured college notes for Students
                 Content: Create markdown notes based on the content provided 
                 Style: Academic
                 Tone: Professional
@@ -77,7 +77,7 @@ def main():
                 Word Count: Same as the amount of content you get
                 Format: Markdown.
 
-                IMPORTANT, Use all the content mentioned in the pdf, and create structured notes. Keep it reference that you are generating detailed notes for the query "{query}".
+                IMPORTANT, Use all the content mentioned in the context, and create structured notes. Keep it reference that you are generating detailed notes for the query "{query}".
 
                 Here is the content:
                 ```
@@ -90,6 +90,8 @@ def main():
                 3. Always start the notes with proper introduction paragraph and end the notes with a proper conclusion of everything discussed.
                 4. Keep the notes extremely detailed and long.
                 '''
+
+        print(prompt)
 
         if prompt:
             docs = knowledgeBase.similarity_search(prompt)

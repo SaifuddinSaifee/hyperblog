@@ -50,11 +50,12 @@ st.markdown("### Upload Notes/Study Material for making the quiz")
 uploaded_file = st.file_uploader("Upload pdf here",type=["pdf"])
 txt = st.text_area('Enter the text from which you want to generate the quiz')
 
-if st.button("Generate Quiz", key=f"button_generer"):
-    if txt is not None:
-        with st.spinner("Generating quiz..."):
-            st.session_state['questions'] = asyncio.run(txt_to_quizz(txt))
-            st.write("Quiz generated successfully!")
+if OPENAI_API_KEY:
+    if st.button("Generate Quiz", key=f"button_generer"):
+        if txt is not None:
+            with st.spinner("Generating quiz..."):
+                st.session_state['questions'] = asyncio.run(txt_to_quizz(txt))
+                st.write("Quiz generated successfully!")
 
 if uploaded_file is not None:    
     old_file_name = st.session_state.get('uploaded_file_name', None)
