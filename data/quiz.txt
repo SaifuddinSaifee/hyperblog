@@ -1,0 +1,1 @@
+Data directory stores thhe Quiz Material and the user uploaded data file.

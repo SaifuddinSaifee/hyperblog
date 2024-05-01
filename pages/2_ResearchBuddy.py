@@ -184,7 +184,7 @@ agent_kwargs = {
 
 if OPENAI_API_KEY:
     # Initiliazing an LLM
-    llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo-16k-0613")
+    llm = ChatOpenAI(temperature=0, model="gpt-4-turbo")
 
     # Saving the chat in memory
     memory = ConversationSummaryBufferMemory(
