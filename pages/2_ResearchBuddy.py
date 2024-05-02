@@ -23,7 +23,9 @@ st.set_page_config(page_title="Research Buddy", page_icon="📃")
 with st.sidebar:
     OPENAI_API_KEY = st.text_input("Your own OPENAI API Key", type="password")
     SERP_API_KEY = st.text_input("Your own SERP API Key", type="password")
+    os.environ["SERP_API_KEY"] = SERP_API_KEY
     BROWSERLESS_API_KEY = st.text_input("Your own BROWSERLESS API Key", type="password")
+    os.environ["BROWSERLESS_API_KEY"] = BROWSERLESS_API_KEY
 
 st.header("ResearchBuddy 📃")
 
